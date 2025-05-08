@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina Inicial</title> <!-- Titulo da sua Pagina -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- Aqui Vinculamos nosso css static no html lembrando que a pasta
+    deve ser static/css/css.css -->
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">INICIO</a></li>
+            <li><a href="contatos">CONTATO</a></li>
+            <li><a href="sobre">SOBRE</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Bem-vindos a nossa página!</h1>
+    </header>
+
+    <section class="content">
+        <h2>Nosso objetivo</h2>
+        <p>A proposta deste site é ajudar a divulgar as atividades gratuitas em nossa região.</p>
+        <p>Neste momento estamos disponibilizando apenas as atividades oferecidas no CEU Rosa da China.</p>
+    </section>
+
+    <section class="content">
+        <h2>Atividades Disponíveis</h2>
+        <p>Essas são as atividades, os horários, níveis e faixa etária indicada:</p>
+
+            <input type="text" id="matchcodeInput" placeholder="Digite a modalidade...">
+            <div id="suggestions" class="autocomplete-suggestions"></div>
+
+            <input type="text" id="matchcodeInput1" placeholder="Digite a faixa etária...">
+            <div id="suggestions1" class="autocomplete-suggestions"></div>
+
+            <input type="text" id="matchcodeInput2" placeholder="Digite o período...">
+            <div id="suggestions2" class="autocomplete-suggestions"></div>
+
+            <input type="text" id="matchcodeInput3" placeholder="Digite o nível...">
+            <div id="suggestions3" class="autocomplete-suggestions"></div>
+
+            <script>
+                // Sugestões para cada filtro
+                const suggestionsModalidades = ['Natação', 'Pilates', 'Musculação', 'Alongamento', 'Ginástica', 'Hidroginástica', 'Corrida'];
+                const suggestionsFaixaEtaria = ['Infantil', 'Adulto', 'Maior que 15 anos', 'Maior que 60 anos', 'Juvenil', 'Maior que 50 anos', 'De 11 a 17 anos'];
+                const suggestionsHorario = ['Manhã', 'Tarde', 'Noite'];
+                const suggestionsNivel = ['Iniciante', 'Intermediário', 'Avançado', 'Fortalecimento', 'Treinamento'];
+
+                // Função para criar a caixa de sugestões dinamicamente
+                function setupAutocomplete(inputId, suggestionsList, suggestionBoxId) {
+                    const input = document.getElementById(inputId);
+                    const suggestionBox = document.getElementById(suggestionBoxId);
+
+                    input.addEventListener('input', function() {
+                        suggestionBox.innerHTML = '';
+                        const value = this.value.toLowerCase();
+                        if (value) {
+                            const filteredSuggestions = suggestionsList.filter(suggestion => suggestion.toLowerCase().includes(value));
+                            filteredSuggestions.forEach(suggestion => {
+                                const div = document.createElement('div');
+                                div.classList.add('suggestion-item');
+                                div.textContent = suggestion;
+                                div.addEventListener('click', function() {
+                                    input.value = suggestion;
+                                    suggestionBox.innerHTML = '';
+                                });
+                                suggestionBox.appendChild(div);
+                            });
+                        }
+                    });
+
+                    document.addEventListener('click', function(event) {
+                        if (!input.contains(event.target) && !suggestionBox.contains(event.target)) {
+                            suggestionBox.innerHTML = '';
+                        }
+                    });
+                }
+
+                // Configurar cada campo de entrada com suas respectivas sugestões
+                setupAutocomplete('matchcodeInput', suggestionsModalidades, 'suggestions');
+                setupAutocomplete('matchcodeInput1', suggestionsFaixaEtaria, 'suggestions1');
+                setupAutocomplete('matchcodeInput2', suggestionsHorario, 'suggestions2');
+                setupAutocomplete('matchcodeInput3', suggestionsNivel, 'suggestions3');
+            </script>
+
+        <br>
+        <br>
+        <br>
+        <p>Para maiores informações compareça a unidade do CEU</p>
+    </section>
+
+    <footer>
+        <p>Rodapé - Todos os direitos reservados &copy; 2025</p>
+    </footer>
+</body>
+</html>
