@@ -1,30 +1,25 @@
 import sqlite3
-# esse arquivo foi criado apenas para realizar um teste com um bd
 
-# Conectar ao banco de dados (ou criar um novo)
-conn = sqlite3.connect('teste.db')
+Source_base = 'C:/Users/Rodrigo/Downloads/Projeto Integrado 1 TESTE DE FUNCIONALIDADES/pythonProject'
 
-# Criar um cursor
+Source1 = Source_base + '/BD_PI1.sql'
+Source2 = Source_base + '/Insert.sql'
+
+# 1. Conecta ao banco de dados (cria se não existir)
+banco_final = Source_base + '/Banco_Dados_PI1.db'
+conn = sqlite3.connect(banco_final)
 cursor = conn.cursor()
 
-# Criar a tabela 'usuarios'
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS usuarios (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE
-    )
-''')
+# 2. Lê e executa o arquivo principal (BD_PI1.sql)
+with open(Source1, 'r', encoding='utf-8') as f:
+    cursor.executescript(f.read())
 
-# Inserir alguns dados de exemplo
-cursor.execute('INSERT INTO usuarios (nome, email) VALUES (?, ?)', ('Alice', 'alice@example.com'))
-cursor.execute('INSERT INTO usuarios (nome, email) VALUES (?, ?)', ('Bob', 'bob@example.com'))
-cursor.execute('INSERT INTO usuarios (nome, email) VALUES (?, ?)', ('Carol', 'carol@example.com'))
+with open(Source2, 'r', encoding='utf-8') as f:
+    cursor.executescript(f.read())
 
-# Salvar (commit) as alterações
+
+# 4. Salva e fecha
 conn.commit()
-
-# Fechar a conexão
 conn.close()
 
-print("Banco de dados e tabela criados com sucesso!")
+print("Banco criado e dados inseridos com sucesso!")
